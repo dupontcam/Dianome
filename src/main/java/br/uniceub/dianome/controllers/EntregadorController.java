@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class EntregadorController {
@@ -28,5 +29,14 @@ public class EntregadorController {
         var entregadorModel = new EntregadorModel();
         BeanUtils.copyProperties(dto, entregadorModel);
         return ResponseEntity.status(HttpStatus.CREATED).body(repository.save(entregadorModel));
+    }
+
+    @GetMapping("/entregadores/{id}")
+    public ResponseEntity<Object> detalhar(@PathVariable(value = "id") Integer id){
+        Optional<EntregadorModel> entregador = repository.findById(id);
+        if(entregador.isEmpty()){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Entregador não encontrado para exibição");
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(entregador.get());
     }
 }
