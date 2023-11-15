@@ -39,4 +39,16 @@ public class EntregadorController {
         }
         return ResponseEntity.status(HttpStatus.OK).body(entregador.get());
     }
+
+    @PutMapping("/entregadores/{id}")
+    public ResponseEntity<Object> atualizarEntregador(@PathVariable(value = "id") Integer id,
+                                                      @RequestBody @Valid EntregadorDto dto){
+        Optional<EntregadorModel> entregador = repository.findById(id);
+        if(entregador.isEmpty()){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Entregador não encontrado para atualizar");
+        }
+        var entregadorModel = entregador.get();
+        BeanUtils.copyProperties(dto, entregadorModel);
+        return ResponseEntity.status(HttpStatus.OK).body(repository.save(entregadorModel));
+    }
 }
