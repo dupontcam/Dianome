@@ -51,4 +51,13 @@ public class EntregadorController {
         BeanUtils.copyProperties(dto, entregadorModel);
         return ResponseEntity.status(HttpStatus.OK).body(repository.save(entregadorModel));
     }
+
+    public ResponseEntity<Object> deleteEntregador(@PathVariable(value = "id") Integer id){
+        Optional<EntregadorModel> entregador = repository.findById(id);
+        if(entregador.isEmpty()){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Entregador não encontrado");
+        }
+        repository.delete(entregador.get());
+        return ResponseEntity.status(HttpStatus.OK).body("O entregador foi excluído.");
+    }
 }
