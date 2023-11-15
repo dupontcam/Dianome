@@ -52,6 +52,7 @@ public class EntregadorController {
         return ResponseEntity.status(HttpStatus.OK).body(repository.save(entregadorModel));
     }
 
+    @DeleteMapping("/entregadores/{id}")
     public ResponseEntity<Object> deleteEntregador(@PathVariable(value = "id") Integer id){
         Optional<EntregadorModel> entregador = repository.findById(id);
         if(entregador.isEmpty()){
